@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hệ Thống Quản Lý Cửa Hàng Tạp Hóa</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">🏪</div>
+        <div class="brand-info">
+          <h2>TẠP HÓA VIỆT</h2>
+          <span class="badge badge-success">Hệ thống quản lý</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#dashboard" class="nav-item active" data-tab="dashboard">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Tổng quan & Thống kê</span>
+        </a>
+        <a href="#pos" class="nav-item nav-pos-btn" data-tab="pos">
+          <span class="nav-icon">🛒</span>
+          <span class="nav-label">Thu ngân (Bán hàng)</span>
+          <span class="badge badge-pos">POS</span>
+        </a>
+        <div class="nav-section-title">QUẢN LÝ HÀNG HÓA</div>
+        <a href="#products" class="nav-item" data-tab="products">
+          <span class="nav-icon">📦</span>
+          <span class="nav-label">Sản phẩm</span>
+        </a>
+        <a href="#categories" class="nav-item" data-tab="categories">
+          <span class="nav-icon">🏷️</span>
+          <span class="nav-label">Loại sản phẩm</span>
+        </a>
+        <a href="#inventory" class="nav-item" data-tab="inventory">
+          <span class="nav-icon">🏢</span>
+          <span class="nav-label">Kho hàng & Kiểm kê</span>
+          <span id="sidebar-low-badge" class="badge badge-danger badge-pill" style="display:none;">0</span>
+        </a>
+        <div class="nav-section-title">GIAO DỊCH & CHỨNG TỪ</div>
+        <a href="#invoices" class="nav-item" data-tab="invoices">
+          <span class="nav-icon">🧾</span>
+          <span class="nav-label">Hóa đơn bán hàng</span>
+        </a>
+        <a href="#receipts" class="nav-item" data-tab="receipts">
+          <span class="nav-icon">📥</span>
+          <span class="nav-label">Phiếu nhập hàng</span>
+        </a>
+        <div class="nav-section-title">ĐỐI TÁC & CON NGƯỜI</div>
+        <a href="#customers" class="nav-item" data-tab="customers">
+          <span class="nav-icon">👥</span>
+          <span class="nav-label">Khách hàng</span>
+        </a>
+        <a href="#suppliers" class="nav-item" data-tab="suppliers">
+          <span class="nav-icon">🏭</span>
+          <span class="nav-label">Nhà cung cấp</span>
+        </a>
+        <a href="#employees" class="nav-item" data-tab="employees">
+          <span class="nav-icon">🧑‍💼</span>
+          <span class="nav-label">Nhân viên</span>
+        </a>
+        <div class="nav-section-title">BÁO CÁO KINH DOANH</div>
+        <a href="#reports" class="nav-item" data-tab="reports">
+          <span class="nav-icon">📈</span>
+          <span class="nav-label">Báo cáo & Phân tích</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="user-chip">
+          <span class="user-avatar">👤</span>
+          <div class="user-details">
+            <strong id="current-user-name">Trần Thị Mai</strong>
+            <small id="current-user-role">Thu ngân ca sáng</small>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="main-content">
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="sidebar-toggle" class="btn-icon">☰</button>
+          <h1 id="page-title">Tổng quan & Thống kê</h1>
+        </div>
+        <div class="topbar-right">
+          <div class="live-clock" id="live-clock">
+            <span class="clock-date">--/--/----</span>
+            <span class="clock-time">00:00:00</span>
+          </div>
+          <button class="btn btn-outline-warning" id="topbar-lowstock-btn" title="Xem sản phẩm sắp hết">
+            ⚠️ Sắp hết hàng: <span id="topbar-low-count" class="bold">0</span>
+          </button>
+          <button class="btn btn-primary" id="topbar-quick-pos">
+            🛒 Bán hàng ngay (F2)
+          </button>
+        </div>
+      </header>
+
+      <div class="tab-content-container">
+
+        <!-- TAB 1: DASHBOARD -->
+        <section id="tab-dashboard" class="tab-pane active">
+          <!-- KPI Cards Grid -->
+          <div class="kpi-grid">
+            <div class="kpi-card card-revenue-today">
+              <div class="kpi-icon">💰</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Doanh thu hôm nay</span>
+                <h3 class="kpi-value" id="kpi-today-revenue">0 ₫</h3>
+                <span class="kpi-sub" id="kpi-today-orders">0 đơn hàng</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-revenue-month">
+              <div class="kpi-icon">📅</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Doanh thu tháng này</span>
+                <h3 class="kpi-value" id="kpi-month-revenue">0 ₫</h3>
+                <span class="kpi-sub" id="kpi-gross-profit">Lãi ước tính: 0 ₫</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-sold">
+              <div class="kpi-icon">🛍️</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Sản phẩm đã bán</span>
+                <h3 class="kpi-value" id="kpi-sold-count">0</h3>
+                <span class="kpi-sub" id="kpi-sold-today">Hôm nay: 0 món</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-inventory">
+              <div class="kpi-icon">📦</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Giá trị hàng tồn kho</span>
+                <h3 class="kpi-value" id="kpi-inv-value">0 ₫</h3>
+                <span class="kpi-sub" id="kpi-inv-units">Tổng tồn: 0 món</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-orders">
+              <div class="kpi-icon">🧾</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Tổng số đơn hàng</span>
+                <h3 class="kpi-value" id="kpi-total-orders">0</h3>
+                <span class="kpi-sub">Toàn thời gian</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-customers">
+              <div class="kpi-icon">👥</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Tổng số khách hàng</span>
+                <h3 class="kpi-value" id="kpi-total-customers">0</h3>
+                <span class="kpi-sub">Khách thành viên</span>
+              </div>
+            </div>
+
+            <div class="kpi-card card-alert">
+              <div class="kpi-icon">⚠️</div>
+              <div class="kpi-details">
+                <span class="kpi-title">Sắp hết hàng</span>
+                <h3 class="kpi-value text-danger" id="kpi-low-stock">0</h3>
+                <span class="kpi-sub">Cần nhập thêm</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts & Top Selling Section -->
+          <div class="dashboard-grid-2">
+            <!-- Canvas Revenue Chart -->
+            <div class="card dashboard-card">
+              <div class="card-header">
+                <h3>📈 Biểu đồ Doanh thu 7 ngày gần nhất</h3>
+                <span class="badge badge-info">Tự động cập nhật</span>
+              </div>
+              <div class="card-body">
+                <div class="chart-wrapper">
+                  <canvas id="revenue-chart" width="600" height="260"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Top Selling Products -->
+            <div class="card dashboard-card">
+              <div class="card-header">
+                <h3>🔥 Sản phẩm bán chạy nhất</h3>
+                <span class="badge badge-success">Top theo số lượng</span>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Sản phẩm</th>
+                        <th>ĐVT</th>
+                        <th class="text-right">Đã bán</th>
+                        <th class="text-right">Doanh thu</th>
+                      </tr>
+                    </thead>
+                    <tbody id="top-selling-tbody">
+                      <tr><td colspan="5" class="text-center text-muted">Đang tải dữ liệu...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Low Stock Warning & Recent Invoices -->
+          <div class="dashboard-grid-2">
+            <!-- Cảnh báo sản phẩm sắp hết hàng -->
+            <div class="card dashboard-card">
+              <div class="card-header header-warning">
+                <h3>⚠️ Cảnh báo: Sản phẩm sắp hết hàng</h3>
+                <button class="btn btn-sm btn-primary" onclick="app.switchTab('receipts')">➕ Lập phiếu nhập</button>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Mã</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Loại hàng</th>
+                        <th class="text-center">Tồn kho</th>
+                        <th class="text-center">Định mức</th>
+                        <th>Trạng thái</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboard-lowstock-tbody">
+                      <tr><td colspan="6" class="text-center text-muted">Đang tải...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Đơn hàng gần đây -->
+            <div class="card dashboard-card">
+              <div class="card-header">
+                <h3>🧾 Hóa đơn bán hàng gần nhất</h3>
+                <button class="btn btn-sm btn-secondary" onclick="app.switchTab('invoices')">Xem tất cả</button>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>Mã HĐ</th>
+                        <th>Thời gian</th>
+                        <th>Khách hàng</th>
+                        <th class="text-right">Tổng tiền</th>
+                        <th>Hình thức</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dashboard-recent-invoices-tbody">
+                      <tr><td colspan="5" class="text-center text-muted">Đang tải...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 2: POS / THU NGÂN (BÁN HÀNG) -->
+        <section id="tab-pos" class="tab-pane">
+          <div class="pos-layout">
+            <!-- Bên trái: Danh mục & Danh sách hàng hóa -->
+            <div class="pos-catalog">
+              <!-- Thanh tìm kiếm & lọc -->
+              <div class="pos-search-bar">
+                <div class="search-input-group">
+                  <span class="search-icon">🔍</span>
+                  <input type="text" id="pos-search-input" placeholder="Tìm theo tên sản phẩm hoặc mã vạch (Barcode)..." autocomplete="off">
+                  <button id="pos-search-clear" class="btn-clear" style="display:none;">✕</button>
+                </div>
+              </div>
+
+              <!-- Thanh phân loại sản phẩm nhanh -->
+              <div class="pos-category-chips" id="pos-category-chips">
+                <button class="chip active" data-cat-id="all">Tất cả</button>
+                <!-- Dynamic categories loaded here -->
+              </div>
+
+              <!-- Lưới sản phẩm -->
+              <div class="pos-product-grid" id="pos-product-grid">
+                <!-- Products cards rendered here -->
+              </div>
+            </div>
+
+            <!-- Bên phải: Giỏ hàng & Thanh toán -->
+            <div class="pos-cart-panel">
+              <div class="cart-header">
+                <h3>🛒 Giỏ hàng (<span id="cart-item-count">0</span> món)</h3>
+                <button class="btn btn-sm btn-outline-danger" id="cart-clear-btn" title="Xóa toàn bộ giỏ hàng">Xóa giỏ</button>
+              </div>
+
+              <!-- Chọn khách hàng & nhân viên -->
+              <div class="cart-customer-bar">
+                <div class="form-group mb-1">
+                  <label class="cart-label">Khách hàng:</label>
+                  <div class="d-flex gap-1">
+                    <select id="pos-customer-select" class="form-control form-control-sm">
+                      <option value="">Khách vãng lai (Lẻ)</option>
+                    </select>
+                    <button class="btn btn-sm btn-outline-secondary" id="pos-add-customer-btn" title="Thêm khách hàng mới">➕</button>
+                  </div>
+                  <div id="pos-customer-info" class="customer-info-pill" style="display:none;">
+                    <span>Điểm: <b id="pos-cust-points">0</b></span> | 
+                    <span>Đã mua: <b id="pos-cust-spent">0 ₫</b></span>
+                  </div>
+                </div>
+
+                <div class="form-group mb-0">
+                  <label class="cart-label">Nhân viên thu ngân:</label>
+                  <select id="pos-employee-select" class="form-control form-control-sm">
+                    <!-- Loaded dynamically -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Danh sách items trong giỏ -->
+              <div class="cart-items-container" id="cart-items-list">
+                <div class="empty-cart-message">
+                  <div class="empty-cart-icon">🛒</div>
+                  <p>Giỏ hàng đang trống</p>
+                  <small class="text-muted">Nhấp vào sản phẩm bên trái hoặc quét mã vạch để thêm vào giỏ.</small>
+                </div>
+              </div>
+
+              <!-- Tổng kết thanh toán -->
+              <div class="cart-summary">
+                <div class="summary-row">
+                  <span>Tiền hàng:</span>
+                  <strong id="cart-subtotal">0 ₫</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Giảm giá / Chiết khấu:</span>
+                  <div class="discount-input-wrap">
+                    <input type="number" id="cart-discount-input" value="0" min="0" step="1000" class="input-discount">
+                    <span>₫</span>
+                  </div>
+                </div>
+                <div class="summary-row total-highlight">
+                  <span>KHÁCH CẦN TRẢ:</span>
+                  <span class="total-big" id="cart-total-amount">0 ₫</span>
+                </div>
+                <div class="summary-row">
+                  <span>Hình thức thanh toán:</span>
+                  <select id="cart-payment-method" class="form-control form-control-sm select-payment">
+                    <option value="Tiền mặt">💵 Tiền mặt</option>
+                    <option value="Chuyển khoản QR">📱 Chuyển khoản QR</option>
+                    <option value="Thẻ">💳 Thẻ ngân hàng</option>
+                  </select>
+                </div>
+                <div class="summary-row" id="row-customer-payment">
+                  <span>Tiền khách đưa:</span>
+                  <div class="payment-input-wrap">
+                    <input type="number" id="cart-customer-payment" placeholder="Nhập số tiền..." min="0" step="1000" class="input-payment">
+                    <span>₫</span>
+                  </div>
+                </div>
+                <div class="quick-cash-buttons" id="quick-cash-pills">
+                  <button type="button" class="btn-cash" data-cash="exact">Đúng số tiền</button>
+                  <button type="button" class="btn-cash" data-cash="50000">50k</button>
+                  <button type="button" class="btn-cash" data-cash="100000">100k</button>
+                  <button type="button" class="btn-cash" data-cash="200000">200k</button>
+                  <button type="button" class="btn-cash" data-cash="500000">500k</button>
+                </div>
+                <div class="summary-row change-highlight">
+                  <span>Tiền thừa thối lại:</span>
+                  <strong id="cart-change-amount">0 ₫</strong>
+                </div>
+
+                <!-- Nút thanh toán -->
+                <button class="btn btn-success btn-lg btn-block btn-checkout" id="btn-process-checkout">
+                  ⚡ THANH TOÁN & IN HÓA ĐƠN
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 3: QUẢN LÝ SẢN PHẨM -->
+        <section id="tab-products" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <input type="text" id="filter-product-search" class="form-control" placeholder="Tìm tên, mã SP, mã vạch...">
+                <select id="filter-product-category" class="form-control">
+                  <option value="">-- Tất cả loại sản phẩm --</option>
+                </select>
+                <label class="checkbox-filter">
+                  <input type="checkbox" id="filter-product-lowstock">
+                  <span>Chỉ hiện SP sắp hết</span>
+                </label>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" id="btn-add-product">➕ Thêm sản phẩm mới</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Icon</th>
+                      <th>Mã SP</th>
+                      <th>Mã vạch</th>
+                      <th>Tên sản phẩm</th>
+                      <th>Loại</th>
+                      <th>ĐVT</th>
+                      <th class="text-right">Giá nhập</th>
+                      <th class="text-right">Giá bán</th>
+                      <th class="text-center">Tồn kho</th>
+                      <th class="text-center">Cảnh báo</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products-table-body">
+                    <tr><td colspan="11" class="text-center text-muted">Đang tải sản phẩm...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 4: LOẠI SẢN PHẨM -->
+        <section id="tab-categories" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <h3>Danh sách Loại sản phẩm</h3>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" id="btn-add-category">➕ Thêm loại sản phẩm</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Mã loại</th>
+                      <th>Tên loại sản phẩm</th>
+                      <th>Mô tả</th>
+                      <th class="text-center">Số lượng sản phẩm</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="categories-table-body">
+                    <tr><td colspan="6" class="text-center text-muted">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 5: KHO HÀNG & KIỂM KÊ -->
+        <section id="tab-inventory" class="tab-pane">
+          <!-- Inventory summary cards -->
+          <div class="inventory-stat-grid">
+            <div class="stat-card">
+              <span class="stat-title">Tổng số mặt hàng</span>
+              <h3 id="inv-stat-prods">0</h3>
+            </div>
+            <div class="stat-card">
+              <span class="stat-title">Tổng số lượng tồn</span>
+              <h3 id="inv-stat-units">0</h3>
+            </div>
+            <div class="stat-card stat-primary">
+              <span class="stat-title">Tổng giá trị tồn kho (Vốn)</span>
+              <h3 id="inv-stat-value">0 ₫</h3>
+            </div>
+            <div class="stat-card stat-warning">
+              <span class="stat-title">Sản phẩm sắp hết</span>
+              <h3 id="inv-stat-low">0</h3>
+            </div>
+            <div class="stat-card stat-danger">
+              <span class="stat-title">Đã hết hàng</span>
+              <h3 id="inv-stat-out">0</h3>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <input type="text" id="filter-inventory-search" class="form-control" placeholder="Tìm theo tên SP hoặc mã...">
+                <select id="filter-inventory-status" class="form-control">
+                  <option value="all">Tất cả trạng thái kho</option>
+                  <option value="low">Sắp hết hàng (tồn ≤ định mức)</option>
+                  <option value="out">Đã hết hàng (tồn = 0)</option>
+                  <option value="normal">Còn hàng ổn định</option>
+                </select>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-outline-primary" id="btn-view-adjustments">📜 Xem lịch sử kiểm kê</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã SP</th>
+                      <th>Tên sản phẩm</th>
+                      <th>Loại</th>
+                      <th>ĐVT</th>
+                      <th class="text-right">Giá vốn</th>
+                      <th class="text-center">Số lượng tồn</th>
+                      <th class="text-center">Định mức</th>
+                      <th class="text-right">Tổng giá trị tồn</th>
+                      <th>Trạng thái</th>
+                      <th>Kiểm kê</th>
+                    </tr>
+                  </thead>
+                  <tbody id="inventory-table-body">
+                    <tr><td colspan="10" class="text-center text-muted">Đang tải danh sách tồn kho...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 6: HÓA ĐƠN BÁN HÀNG -->
+        <section id="tab-invoices" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <input type="text" id="filter-invoice-search" class="form-control" placeholder="Tìm theo mã HĐ, tên khách, SĐT...">
+                <input type="date" id="filter-invoice-from" class="form-control" title="Từ ngày">
+                <input type="date" id="filter-invoice-to" class="form-control" title="Đến ngày">
+                <button class="btn btn-outline-secondary" id="btn-invoice-filter">Lọc</button>
+                <button class="btn btn-outline-secondary" id="btn-invoice-reset">Đặt lại</button>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" onclick="app.switchTab('pos')">🛒 Tạo hóa đơn mới</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã hóa đơn</th>
+                      <th>Ngày giờ bán</th>
+                      <th>Khách hàng</th>
+                      <th>Thu ngân</th>
+                      <th class="text-center">Số món</th>
+                      <th class="text-right">Tiền hàng</th>
+                      <th class="text-right">Giảm giá</th>
+                      <th class="text-right">Tổng thu</th>
+                      <th>Hình thức</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoices-table-body">
+                    <tr><td colspan="10" class="text-center text-muted">Đang tải hóa đơn...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 7: PHIẾU NHẬP HÀNG -->
+        <section id="tab-receipts" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <h3>Danh sách Phiếu nhập hàng</h3>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-success" id="btn-create-receipt">📥 Lập phiếu nhập hàng mới</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã phiếu</th>
+                      <th>Ngày nhập</th>
+                      <th>Nhà cung cấp</th>
+                      <th>Người lập</th>
+                      <th class="text-center">Số mặt hàng</th>
+                      <th class="text-right">Tổng tiền nhập</th>
+                      <th>Ghi chú</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="receipts-table-body">
+                    <tr><td colspan="8" class="text-center text-muted">Đang tải phiếu nhập...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 8: KHÁCH HÀNG -->
+        <section id="tab-customers" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <input type="text" id="filter-customer-search" class="form-control" placeholder="Tìm tên khách hàng, số điện thoại...">
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" id="btn-add-customer">➕ Thêm khách hàng</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã KH</th>
+                      <th>Họ và tên</th>
+                      <th>Số điện thoại</th>
+                      <th>Địa chỉ</th>
+                      <th class="text-center">Điểm tích lũy</th>
+                      <th class="text-right">Tổng chi tiêu</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="customers-table-body">
+                    <tr><td colspan="7" class="text-center text-muted">Đang tải khách hàng...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 9: NHÀ CUNG CẤP -->
+        <section id="tab-suppliers" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <h3>Danh sách Nhà cung cấp</h3>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" id="btn-add-supplier">➕ Thêm nhà cung cấp</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã NCC</th>
+                      <th>Tên nhà cung cấp</th>
+                      <th>Điện thoại</th>
+                      <th>Email</th>
+                      <th>Địa chỉ</th>
+                      <th>Ghi chú</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="suppliers-table-body">
+                    <tr><td colspan="7" class="text-center text-muted">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 10: NHÂN VIÊN -->
+        <section id="tab-employees" class="tab-pane">
+          <div class="card">
+            <div class="card-header toolbar-header">
+              <div class="toolbar-left">
+                <h3>Danh sách Nhân viên</h3>
+              </div>
+              <div class="toolbar-right">
+                <button class="btn btn-primary" id="btn-add-employee">➕ Thêm nhân viên</button>
+              </div>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>Mã NV</th>
+                      <th>Họ và tên</th>
+                      <th>Số điện thoại</th>
+                      <th>Chức vụ</th>
+                      <th>Trạng thái</th>
+                      <th>Thao tác</th>
+                    </tr>
+                  </thead>
+                  <tbody id="employees-table-body">
+                    <tr><td colspan="6" class="text-center text-muted">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- TAB 11: BÁO CÁO & PHÂN TÍCH -->
+        <section id="tab-reports" class="tab-pane">
+          <div class="reports-header-card">
+            <h2>📊 Báo Cáo Hoạt Động Kinh Doanh & Doanh Thu</h2>
+            <p class="text-muted">Phân tích chuyên sâu về doanh số, cơ cấu sản phẩm bán chạy và nguồn thu.</p>
+          </div>
+
+          <div class="dashboard-grid-2">
+            <!-- Doanh thu theo nhóm hàng -->
+            <div class="card">
+              <div class="card-header">
+                <h3>🏷️ Doanh thu theo Loại sản phẩm</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Loại sản phẩm</th>
+                        <th class="text-center">Số lượng bán</th>
+                        <th class="text-right">Doanh thu</th>
+                        <th class="text-right">Tỷ trọng</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reports-category-tbody">
+                      <tr><td colspan="4" class="text-center text-muted">Đang tải...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cơ cấu thanh toán -->
+            <div class="card">
+              <div class="card-header">
+                <h3>💳 Cơ cấu Phương thức Thanh toán</h3>
+              </div>
+              <div class="card-body p-0">
+                <div class="table-responsive">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Phương thức</th>
+                        <th class="text-center">Số giao dịch</th>
+                        <th class="text-right">Tổng tiền</th>
+                        <th class="text-right">Tỷ trọng</th>
+                      </tr>
+                    </thead>
+                    <tbody id="reports-payment-tbody">
+                      <tr><td colspan="4" class="text-center text-muted">Đang tải...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top 10 sản phẩm mang lại doanh thu cao nhất -->
+          <div class="card mt-3">
+            <div class="card-header">
+              <h3>🏆 Top 10 Sản Phẩm Đạt Doanh Thu & Lợi Nhuận Cao Nhất</h3>
+            </div>
+            <div class="card-body p-0">
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Mã SP</th>
+                      <th>Tên sản phẩm</th>
+                      <th>ĐVT</th>
+                      <th class="text-center">Số lượng đã bán</th>
+                      <th class="text-right">Doanh thu thu về</th>
+                      <th class="text-right">Lợi nhuận gộp ước tính</th>
+                    </tr>
+                  </thead>
+                  <tbody id="reports-topprods-tbody">
+                    <tr><td colspan="7" class="text-center text-muted">Đang tải...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ==================== MODALS CONTAINER ==================== -->
+
+  <!-- Modal Sản phẩm (Thêm/Sửa) -->
+  <div id="modal-product" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-product-title">Thêm sản phẩm mới</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-product')">&times;</button>
+        </div>
+        <form id="form-product">
+          <div class="modal-body">
+            <input type="hidden" id="prod-id">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Mã sản phẩm (để trống tự sinh):</label>
+                <input type="text" id="prod-code" class="form-control" placeholder="VD: SP025">
+              </div>
+              <div class="form-group col-6">
+                <label>Mã vạch (Barcode):</label>
+                <input type="text" id="prod-barcode" class="form-control" placeholder="VD: 893456789...">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Tên sản phẩm <span class="text-danger">*</span>:</label>
+              <input type="text" id="prod-name" class="form-control" required placeholder="VD: Mì Hảo Hảo tôm chua cay">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Loại sản phẩm:</label>
+                <select id="prod-category" class="form-control"></select>
+              </div>
+              <div class="form-group col-6">
+                <label>Nhà cung cấp:</label>
+                <select id="prod-supplier" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Đơn vị tính <span class="text-danger">*</span>:</label>
+                <input type="text" id="prod-unit" class="form-control" required placeholder="Gói, Lon, Chai...">
+              </div>
+              <div class="form-group col-4">
+                <label>Giá nhập (vốn):</label>
+                <input type="number" id="prod-cost" class="form-control" min="0" step="100" value="0">
+              </div>
+              <div class="form-group col-4">
+                <label>Giá bán <span class="text-danger">*</span>:</label>
+                <input type="number" id="prod-price" class="form-control" min="0" step="100" required value="0">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4">
+                <label>Số lượng tồn ban đầu:</label>
+                <input type="number" id="prod-stock" class="form-control" min="0" value="0">
+              </div>
+              <div class="form-group col-4">
+                <label>Cảnh báo sắp hết (định mức):</label>
+                <input type="number" id="prod-min-alert" class="form-control" min="1" value="10">
+              </div>
+              <div class="form-group col-4">
+                <label>Biểu tượng (Icon/Emoji):</label>
+                <input type="text" id="prod-icon" class="form-control" value="📦">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-product')">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu sản phẩm</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Loại sản phẩm -->
+  <div id="modal-category" class="modal-backdrop">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-category-title">Thêm loại sản phẩm</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-category')">&times;</button>
+        </div>
+        <form id="form-category">
+          <div class="modal-body">
+            <input type="hidden" id="cat-id">
+            <div class="form-group">
+              <label>Tên loại sản phẩm <span class="text-danger">*</span>:</label>
+              <input type="text" id="cat-name" class="form-control" required placeholder="VD: Nước giải khát">
+            </div>
+            <div class="form-group">
+              <label>Mô tả ngắn:</label>
+              <textarea id="cat-desc" class="form-control" rows="2" placeholder="Ghi chú về nhóm hàng..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-category')">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Khách hàng -->
+  <div id="modal-customer" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-customer-title">Thêm khách hàng</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-customer')">&times;</button>
+        </div>
+        <form id="form-customer">
+          <div class="modal-body">
+            <input type="hidden" id="cust-id">
+            <div class="form-group">
+              <label>Họ và tên <span class="text-danger">*</span>:</label>
+              <input type="text" id="cust-name" class="form-control" required placeholder="VD: Nguyễn Thị Lan">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Số điện thoại:</label>
+                <input type="text" id="cust-phone" class="form-control" placeholder="0901234567">
+              </div>
+              <div class="form-group col-6">
+                <label>Điểm tích lũy ban đầu:</label>
+                <input type="number" id="cust-points" class="form-control" value="0">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Địa chỉ:</label>
+              <input type="text" id="cust-address" class="form-control" placeholder="Số nhà, đường, phường, quận...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-customer')">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu khách hàng</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nhà cung cấp -->
+  <div id="modal-supplier" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-supplier-title">Thêm nhà cung cấp</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-supplier')">&times;</button>
+        </div>
+        <form id="form-supplier">
+          <div class="modal-body">
+            <input type="hidden" id="sup-id">
+            <div class="form-group">
+              <label>Tên nhà cung cấp <span class="text-danger">*</span>:</label>
+              <input type="text" id="sup-name" class="form-control" required placeholder="VD: Công ty TNHH Unilever">
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Số điện thoại:</label>
+                <input type="text" id="sup-phone" class="form-control" placeholder="02838123456">
+              </div>
+              <div class="form-group col-6">
+                <label>Email liên hệ:</label>
+                <input type="email" id="sup-email" class="form-control" placeholder="contact@supplier.com">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Địa chỉ:</label>
+              <input type="text" id="sup-address" class="form-control" placeholder="Địa chỉ kho / trụ sở">
+            </div>
+            <div class="form-group">
+              <label>Ghi chú:</label>
+              <input type="text" id="sup-notes" class="form-control" placeholder="Mặt hàng cung cấp chủ yếu...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-supplier')">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu nhà cung cấp</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nhân viên -->
+  <div id="modal-employee" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-employee-title">Thêm nhân viên</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-employee')">&times;</button>
+        </div>
+        <form id="form-employee">
+          <div class="modal-body">
+            <input type="hidden" id="emp-id">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Mã nhân viên (để trống tự sinh):</label>
+                <input type="text" id="emp-code" class="form-control" placeholder="VD: NV04">
+              </div>
+              <div class="form-group col-6">
+                <label>Họ và tên <span class="text-danger">*</span>:</label>
+                <input type="text" id="emp-name" class="form-control" required placeholder="VD: Trần Thị Mai">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Số điện thoại:</label>
+                <input type="text" id="emp-phone" class="form-control" placeholder="0987654321">
+              </div>
+              <div class="form-group col-6">
+                <label>Chức vụ:</label>
+                <select id="emp-role" class="form-control">
+                  <option value="Thu ngân">Thu ngân</option>
+                  <option value="Nhân viên kho">Nhân viên kho</option>
+                  <option value="Quản lý">Quản lý</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Trạng thái làm việc:</label>
+              <select id="emp-status" class="form-control">
+                <option value="active">Đang làm việc</option>
+                <option value="inactive">Đã nghỉ việc</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-employee')">Hủy</button>
+            <button type="submit" class="btn btn-primary">Lưu nhân viên</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Lập phiếu nhập hàng -->
+  <div id="modal-receipt-create" class="modal-backdrop">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📥 Lập Phiếu Nhập Hàng</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-receipt-create')">&times;</button>
+        </div>
+        <form id="form-receipt">
+          <div class="modal-body">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Nhà cung cấp <span class="text-danger">*</span>:</label>
+                <select id="receipt-supplier" class="form-control" required></select>
+              </div>
+              <div class="form-group col-6">
+                <label>Nhân viên nhập hàng:</label>
+                <select id="receipt-employee" class="form-control"></select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Ghi chú phiếu nhập:</label>
+              <input type="text" id="receipt-notes" class="form-control" placeholder="VD: Nhập hàng nước ngọt đợt Tết...">
+            </div>
+
+            <!-- Bảng danh sách mặt hàng nhập -->
+            <div class="receipt-items-section mt-3">
+              <div class="d-flex justify-between align-center mb-2">
+                <h4>Danh sách sản phẩm nhập vào kho:</h4>
+                <button type="button" class="btn btn-sm btn-outline-primary" id="btn-receipt-add-row">➕ Thêm dòng</button>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-bordered" id="receipt-items-table">
+                  <thead>
+                    <tr>
+                      <th style="width: 45%;">Sản phẩm</th>
+                      <th style="width: 20%;">Số lượng nhập</th>
+                      <th style="width: 25%;">Đơn giá nhập (₫)</th>
+                      <th style="width: 10%;">Xóa</th>
+                    </tr>
+                  </thead>
+                  <tbody id="receipt-items-tbody">
+                    <!-- Dynamic rows -->
+                  </tbody>
+                </table>
+              </div>
+              <div class="receipt-total-bar mt-2 text-right">
+                <span style="font-size: 1.1rem;">Tổng tiền phiếu nhập: </span>
+                <strong id="receipt-total-display" class="text-primary" style="font-size: 1.3rem;">0 ₫</strong>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-receipt-create')">Hủy</button>
+            <button type="submit" class="btn btn-success">Xác nhận & Cập nhật kho</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chi tiết Phiếu nhập -->
+  <div id="modal-receipt-detail" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Chi tiết Phiếu Nhập Hàng</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-receipt-detail')">&times;</button>
+        </div>
+        <div class="modal-body" id="receipt-detail-body">
+          <!-- Loaded dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-receipt-detail')">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Điều chỉnh kho (Kiểm kê) -->
+  <div id="modal-adjust-stock" class="modal-backdrop">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Kiểm kê / Điều chỉnh tồn kho</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-adjust-stock')">&times;</button>
+        </div>
+        <form id="form-adjust-stock">
+          <div class="modal-body">
+            <input type="hidden" id="adj-product-id">
+            <div class="form-group">
+              <label>Sản phẩm:</label>
+              <strong id="adj-product-name" class="d-block text-primary">--</strong>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Tồn trên hệ thống:</label>
+                <input type="text" id="adj-old-qty" class="form-control" readonly disabled>
+              </div>
+              <div class="form-group col-6">
+                <label>Số lượng thực tế <span class="text-danger">*</span>:</label>
+                <input type="number" id="adj-new-qty" class="form-control" min="0" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Lý do điều chỉnh:</label>
+              <select id="adj-reason" class="form-control">
+                <option value="Kiểm kê định kỳ">Kiểm kê định kỳ</option>
+                <option value="Hao hụt / Rơi vỡ / Hỏng hóc">Hao hụt / Rơi vỡ / Hỏng hóc</option>
+                <option value="Hết hạn sử dụng">Hết hạn sử dụng</option>
+                <option value="Tìm thấy hàng thất lạc">Tìm thấy hàng thất lạc</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-adjust-stock')">Hủy</button>
+            <button type="submit" class="btn btn-warning">Lưu kiểm kê</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Xem lịch sử kiểm kê -->
+  <div id="modal-adjustments-history" class="modal-backdrop">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>📜 Lịch Sử Kiểm Kê & Điều Chỉnh Kho</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-adjustments-history')">&times;</button>
+        </div>
+        <div class="modal-body p-0">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th>Mã phiếu</th>
+                  <th>Thời gian</th>
+                  <th>Sản phẩm</th>
+                  <th class="text-center">Tồn cũ</th>
+                  <th class="text-center">Thực tế</th>
+                  <th class="text-center">Chênh lệch</th>
+                  <th>Lý do</th>
+                </tr>
+              </thead>
+              <tbody id="adjustments-table-body">
+                <tr><td colspan="7" class="text-center text-muted">Đang tải...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-adjustments-history')">Đóng</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Chi tiết / In Hóa đơn -->
+  <div id="modal-invoice-detail" class="modal-backdrop">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header no-print">
+          <h3>🧾 Hóa Đơn Bán Lẻ</h3>
+          <button class="modal-close" onclick="app.closeModal('modal-invoice-detail')">&times;</button>
+        </div>
+        <div class="modal-body print-area" id="invoice-printable-area">
+          <!-- Printable thermal invoice content -->
+        </div>
+        <div class="modal-footer no-print">
+          <button type="button" class="btn btn-secondary" onclick="app.closeModal('modal-invoice-detail')">Đóng</button>
+          <button type="button" class="btn btn-primary" onclick="window.print()">🖨️ In Hóa Đơn</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- JavaScript Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/pos.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/categories.js"></script>
+  <script src="js/customers.js"></script>
+  <script src="js/suppliers.js"></script>
+  <script src="js/employees.js"></script>
+  <script src="js/receipts.js"></script>
+  <script src="js/invoices.js"></script>
+  <script src="js/inventory.js"></script>
+  <script src="js/reports.js"></script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "name": "grocery-store-management",
+  "version": "1.0.0",
+  "description": "Hệ thống Quản lý Cửa hàng Tạp hóa (Grocery Store Management System) - Node.js, HTML5, CSS3",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js"
+  },
+  "keywords": [
+    "grocery",
+    "pos",
+    "inventory",
+    "store-management",
+    "nodejs",
+    "sqlite"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}
