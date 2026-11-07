@@ -1,0 +1,136 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.Master.cs" Inherits="QuanLiCuaHangTapHoa.SiteMaster" %>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Hệ Thống Quản Lý Cửa Hàng Tạp Hóa</title>
+    
+    <link rel="stylesheet" href="Content/style.css" />
+    <link rel="stylesheet" href="Content/print.css" media="print" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+
+        <div class="app-container">
+            <!-- SIDEBAR -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <div class="brand-logo">🏪</div>
+                    <div class="brand-info">
+                        <h2>TẠP HÓA VIỆT</h2>
+                        <span class="badge badge-success">Hệ thống quản lý</span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav">
+                    <a href="Default.aspx" class="nav-item <%= IsActive("Default.aspx") %>">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-label">Tổng quan & Thống kê</span>
+                    </a>
+                    <a href="POS.aspx" class="nav-item nav-pos-btn <%= IsActive("POS.aspx") %>">
+                        <span class="nav-icon">🛒</span>
+                        <span class="nav-label">Thu ngân (Bán hàng)</span>
+                        <span class="badge badge-pos">POS</span>
+                    </a>
+
+                    <div class="nav-section-title">QUẢN LÝ HÀNG HÓA</div>
+                    <a href="Products.aspx" class="nav-item <%= IsActive("Products.aspx") %>">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-label">Sản phẩm</span>
+                    </a>
+                    <a href="Categories.aspx" class="nav-item <%= IsActive("Categories.aspx") %>">
+                        <span class="nav-icon">🏷️</span>
+                        <span class="nav-label">Loại sản phẩm</span>
+                    </a>
+                    <a href="Inventory.aspx" class="nav-item <%= IsActive("Inventory.aspx") %>">
+                        <span class="nav-icon">🏢</span>
+                        <span class="nav-label">Kho hàng & Kiểm kê</span>
+                        <asp:Literal ID="litSidebarLowBadge" runat="server" />
+                    </a>
+
+                    <div class="nav-section-title">GIAO DỊCH & CHỨNG TỪ</div>
+                    <a href="Invoices.aspx" class="nav-item <%= IsActive("Invoices.aspx") %>">
+                        <span class="nav-icon">🧾</span>
+                        <span class="nav-label">Hóa đơn bán hàng</span>
+                    </a>
+                    <a href="GoodsReceipts.aspx" class="nav-item <%= IsActive("GoodsReceipts.aspx") %>">
+                        <span class="nav-icon">📥</span>
+                        <span class="nav-label">Phiếu nhập hàng</span>
+                    </a>
+
+                    <div class="nav-section-title">ĐỐI TÁC & CON NGƯỜI</div>
+                    <a href="Customers.aspx" class="nav-item <%= IsActive("Customers.aspx") %>">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-label">Khách hàng</span>
+                    </a>
+                    <a href="Suppliers.aspx" class="nav-item <%= IsActive("Suppliers.aspx") %>">
+                        <span class="nav-icon">🏭</span>
+                        <span class="nav-label">Nhà cung cấp</span>
+                    </a>
+                    <a href="Employees.aspx" class="nav-item <%= IsActive("Employees.aspx") %>">
+                        <span class="nav-icon">🧑‍💼</span>
+                        <span class="nav-label">Nhân viên</span>
+                    </a>
+
+                    <div class="nav-section-title">BÁO CÁO KINH DOANH</div>
+                    <a href="Reports.aspx" class="nav-item <%= IsActive("Reports.aspx") %>">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-label">Báo cáo & Phân tích</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <div class="user-chip">
+                        <span class="user-avatar">👤</span>
+                        <div class="user-details">
+                            <strong>Trần Thị Mai</strong>
+                            <small>Thu ngân ca sáng</small>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- MAIN CONTENT AREA -->
+            <main class="main-content">
+                <!-- TOPBAR -->
+                <header class="topbar">
+                    <div class="topbar-left">
+                        <button type="button" id="sidebar-toggle" class="btn-icon">☰</button>
+                        <h1 id="page-title"><%: Page.Title %></h1>
+                    </div>
+                    <div class="topbar-right">
+                        <div class="live-clock" id="live-clock">
+                            <span class="clock-date">--/--/----</span>
+                            <span class="clock-time">00:00:00</span>
+                        </div>
+                        <a href="Inventory.aspx?status=low" class="btn btn-outline-warning" id="topbar-lowstock-btn" title="Xem sản phẩm sắp hết">
+                            ⚠️ Sắp hết hàng: <span class="bold"><asp:Literal ID="litTopbarLowCount" runat="server" Text="0" /></span>
+                        </a>
+                        <a href="POS.aspx" class="btn btn-primary" id="topbar-quick-pos">
+                            🛒 Bán hàng ngay (F2)
+                        </a>
+                    </div>
+                </header>
+
+                <div class="tab-content-container">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </main>
+        </div>
+    </form>
+
+    <script src="Scripts/app.js"></script>
+    <asp:ContentPlaceHolder ID="ScriptsContent" runat="server">
+    </asp:ContentPlaceHolder>
+</body>
+</html>
