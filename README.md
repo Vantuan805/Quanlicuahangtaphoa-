@@ -68,31 +68,3 @@ QuanLiCuaHangTapHoa_WebForms/
 ├── QuanLiCuaHangTapHoa.sln    # Solution file Visual Studio
 ├── run_server.bat             # File chạy tức thì với IIS Express & tự mở trình duyệt
 └── README.md
-```
-
----
-
-## 🛠️ Hướng Dẫn Cài Đặt & Chạy Ứng Dụng
-
-### Cách 1: Khởi chạy tức thì bằng `run_server.bat` (Khuyên dùng)
-Chỉ cần nhấp đúp vào file `run_server.bat` trong thư mục dự án, hệ thống sẽ:
-1. Khởi động máy chủ `IIS Express` phục vụ website tại cổng `8088`.
-2. Tự động mở trình duyệt web và truy cập: `http://localhost:8088/Default.aspx`.
-
-### Cách 2: Mở và chạy bằng Visual Studio
-1. Mở file giải pháp [`QuanLiCuaHangTapHoa.sln`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/QuanLiCuaHangTapHoa.sln) bằng Visual Studio (2017, 2019, 2022).
-2. Kiểm tra chuỗi kết nối trong file [`Web.config`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Web.config) (mặc định đã cấu hình sẵn cho `(localdb)\MSSQLLocalDB`):
-   ```xml
-   <connectionStrings>
-     <add name="DefaultConnection" 
-          connectionString="Server=(localdb)\MSSQLLocalDB;Database=QuanLiCuaHangTapHoa;Integrated Security=True;MultipleActiveResultSets=True;" 
-          providerName="System.Data.SqlClient" />
-   </connectionStrings>
-   ```
-3. Nhấn **F5** hoặc bấm nút **IIS Express** (Google Chrome / Edge) để chạy chương trình.
-
-### Cách 3: Nạp lại cơ sở dữ liệu nếu dùng SQL Server khác
-Nếu bạn sử dụng SQL Server phiên bản đầy đủ (MSSQLSERVER) hoặc SQLEXPRESS:
-1. Mở file [`Database.sql`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Database.sql) trong **SQL Server Management Studio (SSMS)**.
-2. Bấm **Execute** (F5) để tự động tạo Database `QuanLiCuaHangTapHoa` và nạp 23 sản phẩm mẫu thực tế cùng danh mục, nhà cung cấp, khách hàng và phiếu giao dịch.
-3. Điều chỉnh tên Server trong `Web.config` tương ứng (ví dụ: `Server=.\SQLEXPRESS;...` hoặc `Server=.;...`).
