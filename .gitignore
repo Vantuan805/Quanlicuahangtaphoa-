@@ -1,0 +1,25 @@
+# ====================================================================
+# .gitignore for ASP.NET Web Forms & Visual Studio Project
+# ====================================================================
+
+# Visual Studio files & directories
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+
+# Build outputs
+[Bb]in/
+[Oo]bj/
+*.dll
+*.pdb
+
+# Log & upgrade files
+*.log
+UpgradeLog*.htm
+UpgradeLog*.XML
+
+# Temporary test executables
+App_Data/*.exe

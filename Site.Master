@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - Hệ Thống Quản Lý Cửa Hàng Tạp Hóa</title>
     
-    <link rel="stylesheet" href="Content/style.css" />
-    <link rel="stylesheet" href="Content/print.css" media="print" />
+    <link rel="stylesheet" href="Content/style.css?v=20261107_03" />
+    <link rel="stylesheet" href="Content/print.css?v=20261107_03" media="print" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -129,7 +129,7 @@
         </div>
     </form>
 
-    <script src="Scripts/app.js"></script>
+    <script src="Scripts/app.js?v=20261107_03"></script>
     <asp:ContentPlaceHolder ID="ScriptsContent" runat="server">
     </asp:ContentPlaceHolder>
 </body>

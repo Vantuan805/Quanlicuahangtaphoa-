@@ -72,5 +72,11 @@ namespace QuanLiCuaHangTapHoa
                 return serializer.Serialize(new { Success = false, Error = ex.Message });
             }
         }
+
+        [WebMethod]
+        public static string GetInvoiceDetails(int id)
+        {
+            return GetInvoice(id);
+        }
     }
 }
