@@ -1,5 +1,7 @@
 # 🏪 HỆ THỐNG QUẢN LÝ CỬA HÀNG TẠP HÓA (ASP.NET WEB FORMS)
 
+Dự án được xây dựng hoàn chỉnh theo chuẩn **ASP.NET Web Forms (C#)** trên nền tảng **.NET Framework 4.8 / 4.7.2** và cơ sở dữ liệu **Microsoft SQL Server / LocalDB**, kế thừa toàn bộ giao diện hiện đại, chuyên nghiệp cùng đầy đủ 11 phân hệ nghiệp vụ từ hệ thống quản lý tạp hóa thực tế.
+
 ---
 
 ## 📌 Các Phân Hệ & Chức Năng Chính
@@ -66,3 +68,6 @@ QuanLiCuaHangTapHoa_WebForms/
 ├── QuanLiCuaHangTapHoa.sln    # Solution file Visual Studio
 ├── run_server.bat             # File chạy tức thì với IIS Express & tự mở trình duyệt
 └── README.md
+```
+
+

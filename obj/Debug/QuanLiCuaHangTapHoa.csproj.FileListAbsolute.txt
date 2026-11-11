@@ -1,0 +1,6 @@
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\bin\QuanLiCuaHangTapHoa.dll
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\bin\QuanLiCuaHangTapHoa.pdb
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\obj\Debug\QuanLiCuaHangTapHoa.dll
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\obj\Debug\QuanLiCuaHangTapHoa.pdb
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\obj\Debug\QuanLiCuaHangTapHoa.csproj.AssemblyReference.cache
+C:\Users\thang\.gemini\antigravity\scratch\QuanLiCuaHangTapHoa_WebForms\obj\Debug\QuanLiCuaHangTapHoa.csproj.CoreCompileInputs.cache
