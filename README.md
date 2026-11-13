@@ -1,73 +1,146 @@
-# 🏪 HỆ THỐNG QUẢN LÝ CỬA HÀNG TẠP HÓA (ASP.NET WEB FORMS)
+# 🏪 HỆ THỐNG QUẢN LÝ CỬA HÀNG TẠP HÓA (GROCERY STORE MANAGEMENT SYSTEM)
 
-Dự án được xây dựng hoàn chỉnh theo chuẩn **ASP.NET Web Forms (C#)** trên nền tảng **.NET Framework 4.8 / 4.7.2** và cơ sở dữ liệu **Microsoft SQL Server / LocalDB**, kế thừa toàn bộ giao diện hiện đại, chuyên nghiệp cùng đầy đủ 11 phân hệ nghiệp vụ từ hệ thống quản lý tạp hóa thực tế.
+Hệ thống phần mềm toàn diện hỗ trợ chủ cửa hàng và nhân viên trong việc quản lý toàn bộ hoạt động kinh doanh hàng ngày của một cửa hàng tạp hóa / bách hóa / siêu thị mini.
+
+Được xây dựng thuần với **HTML5, CSS3, JavaScript và Node.js** (sử dụng thư viện CSDL chuẩn `node:sqlite` tích hợp sẵn trong Node.js, không phụ thuộc thư viện ngoài - **Zero external dependencies**, khởi chạy tức thì).
 
 ---
 
 ## 📌 Các Phân Hệ & Chức Năng Chính
 
-| STT | Trang ASPX | Tên Phân Hệ | Mô Tả Nghiệp Vụ |
-| :---: | :--- | :--- | :--- |
-| **1** | [`Default.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Default.aspx) | **Tổng quan & Thống kê (Dashboard)** | 7 thẻ KPI (Doanh thu ngày, Doanh thu tháng & lãi ước tính, Hàng đã bán, Giá trị vốn tồn kho, Đơn hàng, Khách hàng, Cảnh báo sắp hết), biểu đồ Canvas doanh thu 7 ngày, Top 5 sản phẩm bán chạy, Hóa đơn gần nhất. |
-| **2** | [`POS.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/POS.aspx) | **Quầy Thu Ngân (POS Cashier)** | Phím tắt **`F2`** mở màn hình POS. Quét Barcode / tìm theo tên, phân loại nhanh qua Category Chips, giỏ hàng tự động kiểm tra tồn kho không cho bán vượt tồn, chiết khấu, chọn khách hàng tích điểm (10.000đ = 1 điểm), chọn thu ngân trực ca, các phím tính nhanh tiền khách đưa, tính tiền thối lại, thanh toán và in hóa đơn nhiệt K80/A5. |
-| **3** | [`Products.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Products.aspx) | **Quản Lý Sản Phẩm** | Danh mục hàng hóa (Mã SP, Barcode, Tên SP, Loại, NCC, ĐVT, Giá nhập, Giá bán, Tồn kho, Mức cảnh báo, Icon emoji). Tìm kiếm từ khóa, lọc theo loại, lọc sắp hết, thêm/sửa/xóa qua modal. |
-| **4** | [`Categories.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Categories.aspx) | **Quản Lý Loại Sản Phẩm** | Phân nhóm hàng (Đồ uống, Mì ăn liền, Gia vị, Sữa, Bánh kẹo, Hóa phẩm, Chăm sóc cá nhân, Đồ khô). Thống kê số sản phẩm trong loại, CRUD và ràng buộc toàn vẹn khi xóa. |
-| **5** | [`Suppliers.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Suppliers.aspx) | **Quản Lý Nhà Cung Cấp** | Danh sách đối tác phân phối (Acecook, PepsiCo, Vinamilk, Unilever, Masan, Gạo miền Tây), liên hệ, email, địa chỉ và CRUD. |
-| **6** | [`Customers.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Customers.aspx) | **Quản Lý Khách Hàng** | Danh sách khách hàng thân thiết, theo dõi điểm thưởng tích lũy, tổng tiền đã chi tiêu, số điện thoại, địa chỉ và CRUD. |
-| **7** | [`Employees.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Employees.aspx) | **Quản Lý Nhân Viên** | Quản lý đội ngũ nhân viên: Phân vai trò Quản lý, Thu ngân, Nhân viên kho, trạng thái công việc (đang làm việc / nghỉ). |
-| **8** | [`GoodsReceipts.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/GoodsReceipts.aspx) | **Quản Lý Phiếu Nhập Hàng** | Lập phiếu nhập kho từ nhà cung cấp, thêm nhiều mặt hàng vào cùng một phiếu, nhập số lượng và giá vốn. Khi xác nhận, hệ thống tự động **cộng dồn tồn kho** và **cập nhật giá vốn mới nhất**. Hỗ trợ xem chi tiết phiếu nhập. |
-| **9** | [`Invoices.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Invoices.aspx) | **Quản Lý Hóa Đơn Bán Lẻ** | Danh sách hóa đơn bán hàng, lọc theo mã hóa đơn, tên/SĐT khách hàng, khoảng ngày (Từ ngày - Đến ngày). Xem chi tiết từng món hàng và in lại hóa đơn (Re-print). |
-| **10** | [`Inventory.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Inventory.aspx) | **Kho Hàng & Kiểm Kê** | Thống kê kho hàng, lọc trạng thái (Còn hàng, Sắp hết, Hết hàng). Chức năng **Phiếu kiểm kê điều chỉnh** ghi nhận số lượng thực tế với các lý do (Kiểm kê định kỳ, Hao hụt/Rơi vỡ, Hết hạn, Thất lạc...). Lưu lịch sử kiểm kê chi tiết. |
-| **11** | [`Reports.aspx`](file:///C:/Users/thang/.gemini/antigravity/scratch/QuanLiCuaHangTapHoa_WebForms/Reports.aspx) | **Báo Cáo & Phân Tích** | Doanh thu & sản lượng theo loại sản phẩm kèm thanh tỷ trọng %, cơ cấu phương thức thanh toán (Tiền mặt, QR, Thẻ), Top 10 sản phẩm doanh thu cao & tỷ suất lãi gộp. |
+### 1. 📊 Tổng Quan & Thống Kê (Dashboard)
+- **Doanh thu trong ngày** & số đơn hàng hoàn thành hôm nay.
+- **Doanh thu trong tháng** & lợi nhuận gộp ước tính (Doanh thu - Giá vốn).
+- **Tổng số đơn hàng** và **tổng số khách hàng** thành viên.
+- **Số lượng sản phẩm đã bán** (toàn thời gian & hôm nay).
+- **Tổng giá trị hàng tồn kho** (tổng vốn đang lưu kho).
+- **Cảnh báo sản phẩm sắp hết hàng**: Tự động nhận diện các mặt hàng có tồn kho $\le$ mức cảnh báo định mức.
+- **Biểu đồ doanh thu 7 ngày gần nhất**: Vẽ trực tiếp bằng Canvas HTML5 mượt mà.
+- **Top sản phẩm bán chạy nhất**: Danh sách xếp hạng theo số lượng và doanh thu thu về.
+- **Hóa đơn gần nhất**: Xem nhanh các giao dịch bán hàng vừa phát sinh.
+
+### 2. 🛒 Quầy Thu Ngân Bán Hàng (POS Cashier)
+- Phím tắt tiện lợi `F2` để mở nhanh màn hình bán hàng bất kỳ lúc nào.
+- Tìm kiếm tức thì theo tên sản phẩm hoặc **quét mã vạch (Barcode)**.
+- Phân nhóm hàng nhanh qua thanh Category Chips.
+- Lưới sản phẩm trực quan hiển thị icon, giá bán và số lượng tồn thực tế.
+- Giỏ hàng thông minh:
+  - Tăng/giảm số lượng (+/-) hoặc gõ trực tiếp.
+  - Kiểm tra tồn kho tự động (chặn không cho bán vượt số lượng tồn thực tế).
+  - Chọn khách hàng thành viên (hiển thị điểm tích lũy & lịch sử chi tiêu).
+  - Chọn nhân viên thu ngân trực ca.
+  - Nhập chiết khấu / giảm giá đơn hàng.
+  - Chọn hình thức thanh toán: Tiền mặt, Chuyển khoản QR, Thẻ ngân hàng.
+  - Phím tính nhanh tiền khách đưa (Đúng số tiền, 50k, 100k, 200k, 500k) & tự động tính tiền thối lại.
+- **Thanh toán & In hóa đơn**:
+  - Tự động trừ kho của từng mặt hàng ngay khi thanh toán.
+  - Tự động cộng điểm tích lũy cho khách hàng (10.000đ = 1 điểm).
+  - Mở cửa sổ in hóa đơn định dạng K80 (máy in nhiệt siêu thị) hoặc in A5/A4 chuyên nghiệp.
+
+### 3. 📦 Quản Lý Sản Phẩm (Products)
+- Danh mục sản phẩm chi tiết: Mã SP, Barcode, Tên sản phẩm, Loại, Nhà cung cấp, ĐVT (gói, lon, chai, hộp, túi, kg...), Giá nhập (vốn), Giá bán, Tồn kho, Định mức cảnh báo, Biểu tượng/Icon.
+- Bộ lọc kết hợp: Tìm kiếm theo tên/mã/barcode, lọc theo danh mục, lọc nhanh các sản phẩm sắp hết hàng.
+- Thêm mới, chỉnh sửa và xóa sản phẩm.
+
+### 4. 🏷️ Quản Lý Loại Sản Phẩm (Categories)
+- Phân nhóm hàng hóa: Đồ uống, Mì & Ăn liền, Gia vị & Nước chấm, Sữa, Bánh kẹo, Hóa phẩm, Chăm sóc cá nhân, Lương thực & Đồ khô...
+- Theo dõi số lượng mặt hàng thuộc từng nhóm.
+- Thêm, sửa, xóa loại sản phẩm (có kiểm tra ràng buộc toàn vẹn dữ liệu).
+
+### 5. 🏢 Quản Lý Kho Hàng & Kiểm Kê (Inventory Tracking)
+- Thống kê kho: Tổng số mặt hàng, tổng số lượng đơn vị tồn, tổng giá trị vốn hàng tồn, số mặt hàng sắp hết, số mặt hàng đã hết.
+- Lọc trạng thái tồn: Còn hàng, Sắp hết hàng, Hết hàng.
+- **Chức năng Kiểm kê kho**:
+  - Ghi nhận số lượng thực tế kiểm kê.
+  - Chọn lý do: Kiểm kê định kỳ, Hao hụt / Rơi vỡ / Hỏng hóc, Hết hạn sử dụng, Tìm thấy hàng thất lạc...
+  - Tự động cập nhật số tồn mới vào kho và lưu vào lịch sử kiểm kê.
+- **Lịch sử kiểm kê**: Xem chi tiết các lần điều chỉnh tồn kho, chênh lệch (+ / -) và lý do.
+
+### 6. 📥 Quản Lý Phiếu Nhập Hàng (Goods Receipts)
+- Lập phiếu nhập hàng từ nhà phân phối / nhà cung cấp.
+- Cho phép thêm nhiều mặt hàng vào cùng một phiếu nhập, nhập số lượng và đơn giá nhập tại thời điểm đó.
+- Khi xác nhận phiếu nhập:
+  - Tự động **cộng thêm số lượng tồn kho** của từng sản phẩm.
+  - Tự động **cập nhật giá nhập mới nhất** cho sản phẩm.
+- Xem danh sách và chi tiết các phiếu nhập hàng đã lập.
+
+### 7. 🧾 Quản Lý Hóa Đơn Bán Hàng (Invoices)
+- Danh sách toàn bộ hóa đơn bán hàng đã phát sinh.
+- Lọc hóa đơn theo từ khóa (Mã HĐ, Tên khách hàng, SĐT) và khoảng thời gian (Từ ngày - Đến ngày).
+- Xem chi tiết từng món hàng trong hóa đơn và **in lại hóa đơn (Re-print)** bất kỳ lúc nào.
+
+### 8. 👥 Quản Lý Khách Hàng (Customers)
+- Quản lý danh sách khách hàng thân thiết: Họ tên, Số điện thoại, Địa chỉ, Điểm tích lũy, Tổng chi tiêu.
+- Thêm mới, sửa, xóa khách hàng. Tự động tích lũy điểm khi mua sắm tại quầy POS.
+
+### 9. 🏭 Quản Lý Nhà Cung Cấp (Suppliers)
+- Quản lý đối tác phân phối: Acecook, PepsiCo, Vinamilk, Unilever, Masan, Đại lý gạo...
+- Lưu thông tin liên hệ, SĐT, Email, Địa chỉ, Ghi chú mặt hàng cung cấp.
+
+### 10. 🧑‍💼 Quản Lý Nhân Viên (Employees)
+- Danh sách nhân viên: Quản lý, Thu ngân, Nhân viên kho.
+- Phân quyền thu ngân phục vụ ca bán hàng tại POS.
+
+### 11. 📈 Báo Cáo & Phân Tích Kinh Doanh (Reports)
+- Báo cáo doanh thu và sản lượng bán theo Loại sản phẩm kèm tỷ trọng %.
+- Cơ cấu phương thức thanh toán (Tiền mặt, Chuyển khoản QR, Thẻ).
+- Top 10 sản phẩm đạt doanh thu cao nhất và lợi nhuận gộp ước tính.
 
 ---
 
-## 🚀 Cấu Trúc Thư Mục Dự Án
+## 🚀 Cấu Trúc Dự Án
 
 ```
-QuanLiCuaHangTapHoa_WebForms/
-├── App_Data/
-│   ├── init_db.ps1            # Script nạp CSDL tự động qua PowerShell
-│   └── test_all_pages.ps1     # Script kiểm thử tự động toàn bộ 11 trang
-├── bin/
-│   ├── QuanLiCuaHangTapHoa.dll # DLL sau khi biên dịch
-│   └── QuanLiCuaHangTapHoa.pdb
-├── Content/
-│   ├── style.css              # Giao diện hiện đại, responsive, thẻ KPI, POS layout
-│   └── print.css              # Định dạng in hóa đơn nhiệt K80 / A5
-├── DAL/
-│   └── DatabaseHelper.cs      # Lớp truy xuất CSDL ADO.NET, Parameterized Query, Transaction
-├── Models/
-│   └── Models.cs              # Định nghĩa toàn bộ thực thể Entity & CartItem
-├── Properties/
-├── Scripts/
-│   └── app.js                 # Đồng hồ thời gian thực, Toast thông báo, Modal, In ấn, Phím tắt F2
-├── Site.Master                # Giao diện khung dùng chung (MasterPage)
-├── Site.Master.cs
-├── Site.Master.designer.cs
-├── Global.asax                # Cấu hình ứng dụng toàn cục
-├── Global.asax.cs
-├── Default.aspx               # 📊 Phân hệ Tổng quan & Thống kê
-├── Default.aspx.cs
-├── Default.aspx.designer.cs
-├── POS.aspx                   # 🛒 Phân hệ Bán hàng thu ngân POS
-├── POS.aspx.cs
-├── POS.aspx.designer.cs
-├── Products.aspx              # 📦 Phân hệ Quản lý sản phẩm
-├── Categories.aspx            # 🏷️ Phân hệ Loại sản phẩm
-├── Suppliers.aspx             # 🏭 Phân hệ Nhà cung cấp
-├── Customers.aspx             # 👥 Phân hệ Khách hàng
-├── Employees.aspx             # 🧑‍💼 Phân hệ Nhân viên
-├── GoodsReceipts.aspx         # 📥 Phân hệ Phiếu nhập kho
-├── Invoices.aspx              # 🧾 Phân hệ Hóa đơn bán lẻ
-├── Inventory.aspx             # 🏢 Phân hệ Kho hàng & Kiểm kê
-├── Reports.aspx               # 📈 Phân hệ Báo cáo kinh doanh
-├── Web.config                 # Chuỗi kết nối CSDL và cấu hình ASP.NET
-├── Database.sql               # Script tạo Database & nạp đầy đủ dữ liệu mẫu tiếng Việt
-├── QuanLiCuaHangTapHoa.csproj # Project file Visual Studio
-├── QuanLiCuaHangTapHoa.sln    # Solution file Visual Studio
-├── run_server.bat             # File chạy tức thì với IIS Express & tự mở trình duyệt
-└── README.md
+grocery-store-management/
+├── package.json               # Cấu hình dự án & scripts khởi chạy
+├── server.js                  # Máy chủ Node.js HTTP Server & REST API
+├── db/
+│   ├── database.js            # Khởi tạo CSDL SQLite & các bảng dữ liệu
+│   ├── seed.js                # Dữ liệu mẫu ban đầu (23+ sản phẩm, danh mục, hóa đơn mẫu)
+│   └── grocery.sqlite         # File CSDL SQLite (tự động tạo)
+├── public/                    # Giao diện người dùng (HTML5 / CSS3 / Vanilla JS)
+│   ├── index.html             # Trang giao diện chính (Single Page App)
+│   ├── css/
+│   │   ├── style.css          # Giao diện hiện đại, responsive, thẻ KPI, POS layout
+│   │   └── print.css          # Tối ưu in hóa đơn nhiệt khổ K80 / A5
+│   └── js/
+│       ├── api.js             # Bộ xử lý gọi REST API
+│       ├── app.js             # Điều hướng tab, đồng hồ, phím tắt F2, toast, modal
+│       ├── dashboard.js       # Thống kê KPI, biểu đồ Canvas 7 ngày, top bán chạy
+│       ├── pos.js             # Màn hình thu ngân, quét barcode, tính tiền, in HĐ
+│       ├── products.js        # Quản lý Sản phẩm (CRUD, lọc, tìm kiếm)
+│       ├── categories.js      # Quản lý Loại sản phẩm
+│       ├── receipts.js        # Lập & xem Phiếu nhập hàng, tự động cộng kho
+│       ├── invoices.js        # Lịch sử hóa đơn bán lẻ, in lại
+│       ├── inventory.js       # Quản lý tồn kho & Kiểm kê điều chỉnh
+│       ├── customers.js       # Quản lý Khách hàng & Điểm thưởng
+│       ├── suppliers.js       # Quản lý Nhà cung cấp
+│       ├── employees.js       # Quản lý Nhân viên
+│       └── reports.js         # Báo cáo chuyên sâu doanh thu & tỷ trọng
+└── README.md                  # Hướng dẫn chi tiết
 ```
 
+---
 
+## 🛠️ Hướng Dẫn Cài Đặt & Khởi Chạy
+
+Dự án sử dụng module `node:sqlite` tích hợp sẵn trong Node.js 22+, **hoàn toàn không cần cài đặt thêm bất kỳ thư viện bên ngoài nào**.
+
+### 1. Khởi chạy Server
+Mở terminal tại thư mục dự án và chạy:
+```bash
+npm start
+# hoặc: node server.js
+```
+
+### 2. Truy cập hệ thống
+Mở trình duyệt web và truy cập địa chỉ:
+```
+http://localhost:3000
+```
+
+### 3. Khôi phục dữ liệu mẫu (Tùy chọn)
+Nếu muốn nạp lại dữ liệu mẫu (sản phẩm tạp hóa Việt Nam thực tế, khách hàng, phiếu nhập và hóa đơn mẫu):
+```bash
+npm run seed
+```
